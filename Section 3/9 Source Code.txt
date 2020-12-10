@@ -1,0 +1,167 @@
+JavaScript
+
+const gameArea = document.querySelector('.gameArea');
+const output = document.createElement('div');
+const btn = document.createElement('button');
+const output1 = document.createElement('div');
+const output2 = document.createElement('div');
+const solutionKey = document.createElement('div');
+const timeCounter  = document.createElement('div');
+const minutesCounter = document.createElement('span');
+const secondsCounter = document.createElement('span');
+timeCounter.classList.add('clockCounter');
+
+
+//
+output.textContent = 'Press button to start the game';
+output1.classList.add('keyz');
+solutionKey.style.display = 'none';
+btn.textContent = 'Start Game';
+btn.style.display = 'block';
+output1.style.display = 'none';
+timeCounter.style.display = 'none';
+//add elements to html page
+timeCounter.append(minutesCounter);
+timeCounter.append(document.createTextNode(':'));
+timeCounter.append(secondsCounter);
+output1.append(solutionKey);
+gameArea.append(timeCounter);
+gameArea.append(output);
+gameArea.append(btn);
+gameArea.append(output2);
+gameArea.append(output1);
+
+//output2.textContent = 'inputs';
+//game values
+const gameWords = ['Hello World',"I love JavaScript","Best Game Ever"];
+const game = {totalSeconds:0,inter:{},keyz:false};
+
+window.addEventListener('DOMContentLoaded',init);
+
+//add interaction
+output1.addEventListener('click',(e)=>{
+    console.log(game.keyz);
+    if(game.keyz){
+        game.keyz=false;
+        solutionKey.style.display = 'none';
+    }else{
+        game.keyz=true;
+        solutionKey.style.display = 'block'; 
+    }
+})
+btn.addEventListener('click',(e)=>{
+    btn.style.display = 'none';
+    startGame();
+})
+
+
+function startGame(){
+    output1.style.display = 'block';
+    timeCounter.style.display = 'block';
+    game.inter = setInterval(setTimer,1000);
+    gameWords.sort((el)=>{
+        return 0.5 - Math.random();
+    });
+    let myPhrase = gameWords.shift();
+    createInputs(myPhrase);
+    let rep = makeOutput1(myPhrase);
+    output.textContent = rep;
+}
+
+function createInputs(val){
+    console.log(val.length);
+    for(let i=0;i<val.length;i++){
+        let playerInput = document.createElement('input');
+        playerInput.setAttribute('maxlength',1);
+        playerInput.classList.add('inVal');
+        playerInput.guess = false;
+        if(val[i]==" "){playerInput.disabled = true;}
+        output2.append(playerInput);
+        playerInput.addEventListener('keydown',(e)=>{
+            playerInput.value = e.key.toUpperCase();
+        })
+        playerInput.addEventListener('focus',(e)=>{
+            if(!playerInput.guess) {
+                playerInput.value = '';
+            }
+        })
+        playerInput.addEventListener('keypress',(e)=>{
+            console.log(e.key,val[i]);
+            if(e.key.toUpperCase() == val[i].toUpperCase()){
+                playerInput.style.borderColor = 'green';
+                playerInput.guess = true;
+            }else{
+                playerInput.style.borderColor = 'red';
+            }
+        })
+    }
+}
+
+
+function makeOutput1(val){
+    let temp = val.split('').map((ltr)=>{
+        return ltr.toLowerCase().charCodeAt(0)-96;
+    })
+    return temp.join('-').replace(/--64-/g,' ');
+}
+
+
+
+
+
+function init(){
+    let html = '';
+    for(let i=97;i<123;i++){
+        let val = String.fromCharCode(i);
+        //console.log(i,val);
+        html += `${i-96}=${val} `;
+    }
+    solutionKey.innerHTML = html;
+}
+
+function setTimer(){
+    game.totalSeconds++;
+    secondsCounter.innerHTML = padNum((game.totalSeconds % 60));
+    minutesCounter.innerHTML = padNum(Math.floor(game.totalSeconds / 60));
+}
+
+function padNum(val){
+    let valString = val + "";
+    if(valString.length < 2){
+        return "0" + valString
+    }else{
+        return valString;
+    }
+}
+
+CSS
+
+.gameArea{
+    text-align: center;
+    margin: auto;
+}
+.inVal {
+    width:20px;
+    text-align: center;
+}
+
+
+.keyz {
+    font-size: 0.8em;
+    background-color: lightgray;
+    padding: 10px;
+    width: 50%;
+    margin: auto;
+}
+.clockCounter {
+    font-size: 3em;
+}
+
+button {
+    margin: auto;
+    padding:15px;
+    background-color: red;
+    border-radius: 10px;
+    color:white;
+    font-size: 2em;
+}

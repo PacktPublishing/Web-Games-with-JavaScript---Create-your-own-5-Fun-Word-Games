@@ -1,0 +1,54 @@
+const gameArea = document.querySelector('.gameArea');
+const userInput = document.createElement('textarea');
+const output = document.createElement('div');
+const btn = document.createElement('button');
+const output1 = document.createElement('div');
+//
+output1.style.fontSize = '0.7em';
+output1.style.backgroundColor = '#ddd';
+output1.style.padding = '10px';
+btn.textContent = 'Create Message code';
+btn.style.display = 'block';
+userInput.style.width = '600px';
+userInput.style.height = '50px';
+userInput.value = "hello world";
+
+//add elements to html page
+gameArea.append(output);
+gameArea.append(userInput);
+gameArea.append(btn);
+gameArea.append(output1);
+window.addEventListener('DOMContentLoaded',init);
+
+function init(){
+    let html = '';
+    for(let i=97;i<123;i++){
+        let val = String.fromCharCode(i);
+        console.log(i,val);
+        html += `${i-96}=${val} `;
+    }
+    output1.innerHTML = html;
+}
+
+
+//add interaction
+btn.addEventListener('click',(e)=>{
+    let rep = makeOutput(userInput.value);
+    output.textContent = rep;
+    console.log(rep);
+})
+
+function makeOutput(val){
+    let holder = [];
+    for(let i=0;i<val.length;i++){
+        let charVal = val.charAt(i);
+        //console.log(charVal);
+        let coded = charVal.toLowerCase().charCodeAt(0)-96;
+        console.log(coded);
+        holder.push(coded);
+    }
+    let temp = holder.join('-');
+    let temp1 = temp.replace(/--64-/g,' ');
+    console.log(temp1);
+    return temp1;
+}

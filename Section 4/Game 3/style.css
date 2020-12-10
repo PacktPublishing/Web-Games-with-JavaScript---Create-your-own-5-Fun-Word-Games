@@ -1,0 +1,33 @@
+.gameArea {
+    text-align: center;
+    font-size: 2em;
+}
+.box , .boxD{
+    display: inline-block;
+    width: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 5px;
+    background-color: black;
+    color:white;
+}
+.boxE{
+    display: inline-block;
+    width: 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px;  
+    font-size: 1.5em;
+}
+.box:hover{
+    background-color: white;
+    color:black;
+}
+button{
+    background-color: red;
+    padding: 10px;
+    color:white;
+    font-size: 2em;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    cursor: grab;
+}

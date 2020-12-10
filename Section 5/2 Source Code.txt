@@ -1,0 +1,40 @@
+HTML
+
+<!doctype html>
+<html>
+    <head><title>WordSearch</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="app3.js"></script>
+    </head>
+    <body>
+        <div class="gameArea"></div>
+    </body>
+</html>
+
+JavaScript
+
+document.addEventListener('DOMContentLoaded',init);
+const eles = {};
+
+function init(){
+    eles.gameArea = document.querySelector('.gameArea');
+    eles.gridContainer = document.createElement('div');
+    eles.myList = document.createElement('div');
+    eles.btn = document.createElement('button');
+    eles.gridSize = document.createElement('input');
+    //eles.gameArea.textContent = "Game Ready";
+    eles.gameArea.append(eles.gridContainer);
+    eles.gameArea.append(eles.myList);
+    eles.gameArea.append(eles.gridSize);
+    eles.gameArea.append(eles.btn);
+    eles.gridSize.setAttribute('type','number');
+    eles.gridContainer.textContent = 'Click Start to Start the Game. Select the number of cells for the game grid.'
+    eles.btn.textContent = 'Click to Start';
+    eles.gridSize.value = 5;
+    eles.btn.addEventListener('click',startGame);
+    console.log(eles);
+}
+
+function startGame(){
+    console.log('start game');
+}

@@ -1,0 +1,35 @@
+.gameArea {
+    text-align: center;
+    margin: auto;
+}
+
+.grid-item {
+    border: 1px solid black;
+    padding:20px;
+    font-size: 2em;
+    text-align: center;
+    cursor:grab;
+}
+.grid-item:hover{
+    background-color: lightsteelblue;
+}
+
+button{
+    padding:10px;
+    text-align: center;
+    color:white;
+    background-color: red;
+    font-size: 2em;
+}
+.myList, input[type="number"]{
+    text-align: center;
+    font-size: 2em;
+}
+input[type="number"]{
+    width:50px;
+}
+.gridContainer{
+    display: grid;
+/*     grid-template-columns: auto auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto; */
+}

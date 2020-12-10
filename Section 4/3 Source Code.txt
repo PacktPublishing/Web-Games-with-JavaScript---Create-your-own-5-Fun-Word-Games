@@ -1,0 +1,43 @@
+HTML
+
+<!doctype html>
+<html>
+    <head><title>Hangman Game</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="app2.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded',app.init);
+    </script>
+    </head>
+    <body>
+        <div class="gameArea"></div>
+    </body>
+</html>
+
+JavaScript
+
+const app = function() {
+    //variables
+    const gameValues = {};
+    const domEle = {};
+
+    function init(){
+         //select the DOM objects
+        domEle.gameArea = document.querySelector('.gameArea');
+        domEle.score =  createElements('div',domEle.gameArea,'score');
+        domEle.hiddenWord = createElements('div',domEle.gameArea,'secret words');
+        domEle.letters =  createElements('div',domEle.gameArea,'letters');
+        console.log(domEle);
+    }
+
+    function createElements(val,parentEle,output){
+        let temp =  document.createElement(val);
+        parentEle.append(temp);
+        temp.textContent = output;
+        return temp;
+    }
+    return {
+        init:init
+    }
+
+}();

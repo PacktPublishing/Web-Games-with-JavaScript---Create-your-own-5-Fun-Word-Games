@@ -1,0 +1,171 @@
+document.addEventListener('DOMContentLoaded',init);
+const eles = {};
+const myWords = ['cat','dog','mouse','bird','horse','donkey','frog','rabbit','snake'];
+const game = {r:5,c:5,w:25,x:'',y:'',arr:[],placedWords:[]};
+
+function init(){
+    eles.gameArea = document.querySelector('.gameArea');
+    eles.gridContainer = document.createElement('div');
+    eles.gridContainer.classList.add('gridContainer');
+    eles.myList = document.createElement('div');
+    eles.btn = document.createElement('button');
+    eles.gridSize = document.createElement('input');
+    eles.myList.classList.add('myList');
+    //eles.gameArea.textContent = "Game Ready";
+    eles.gameArea.append(eles.gridContainer);
+    eles.gameArea.append(eles.myList);
+    eles.gameArea.append(eles.gridSize);
+    eles.gameArea.append(eles.btn);
+    eles.gridSize.setAttribute('type','number');
+    eles.gridSize.setAttribute('max','20');
+    eles.gridSize.setAttribute('min','2');
+    eles.gridContainer.textContent = 'Click Start to Start the Game. Select the number of cells for the game grid.'
+    eles.btn.textContent = 'Click to Start';
+    eles.gridSize.value = 5;
+    eles.btn.addEventListener('click',startGame);
+    //console.log(eles);
+}
+
+function startGame(){
+    //console.log('start game');
+    eles.gridSize.style.display = 'none';
+    eles.btn.style.display = 'none';
+    game.r = Number(eles.gridSize.value); //rows
+    game.c = Number(eles.gridSize.value); //cols
+    game.x = '';
+    game.y = '';
+    game.arr.length = 0;
+    game.arr.length = game.r * game.c;
+    game.placedWords.length = 0;
+    for(let i=0;i<game.arr.length;i++){
+        game.arr[i] = '-';
+    }
+    for(let xx=0;xx<game.r;xx++){ game.x += ' auto '}
+    for(let yy=0;yy<game.r;yy++){ game.y += ' auto '}
+    //console.log(game);
+    eles.gridContainer.style.gridTemplateColumns = game.x;
+    eles.gridContainer.style.gridTemplateRows = game.y;
+
+    myWords.forEach((val,index)=>{
+        let temp = placeWord(val);
+        if(temp){
+            game.placedWords.push({
+                word:val,pos:temp
+            });
+        }
+        
+    })
+
+    addLetters();
+    buildBoard();
+    eles.myList.innerHTML = '';
+    game.placedWords.forEach((w)=>{
+        w.ele = document.createElement('div');
+        w.ele.textContent = w.word;
+        w.ele.arr = w.pos;
+        eles.myList.append(w.ele);
+    })
+    console.log(game);
+
+}
+function addLetters(){
+    for(let i=0;i<game.arr.length;i++){
+        if(game.arr[i]=='-'){
+            game.arr[i]=randomLetter();
+        }
+    }
+}
+
+function randomLetter(){
+    return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.toLowerCase().split('')[Math.floor(Math.random()*26)]
+}
+
+function placeWord(word){
+    //console.log(word);
+    let placedOkay = false;
+    let cnt = 300;
+    word = (Math.random() > 0.5) ? word : word.split('').reverse().join('');
+    //console.log(word);
+    while(!placedOkay && cnt > 0){
+        cnt--;
+        let pos = {col:0,row:0}
+        let dir = (Math.random() > 0.5) ? true : false;
+        if(dir && word.length <= game.c){
+            pos.col = findStartPos(word.length,game.c);
+            pos.row = Math.floor(Math.random() * game.r);
+            placedOkay = xPlace(pos,word);
+        }else if(!dir && word.length <= game.r){
+            pos.row = findStartPos(word.length,game.r);
+            pos.col = Math.floor(Math.random() * game.c);
+            placedOkay = yPlace(pos,word); 
+        }
+    }
+    return placedOkay;
+}
+function yPlace(cor,word){
+    let start = (cor.row * game.c) + cor.col;
+    let okayCounter = 0;
+    let indexPlaced = [];
+    for(let i=0;i<word.length;i++){
+        if(game.arr[start+(i*game.c)]=='-'){
+            okayCounter++;
+        }
+    }
+    if(okayCounter == word.length){
+        for(let i=0;i<word.length;i++){
+            if(game.arr[start+(i*game.c)]=='-'){
+                game.arr[start+(i*game.c)] = word[i];
+                indexPlaced.push(start+(i*game.c));
+            }
+        }
+        return indexPlaced;
+    }
+    return false;
+}
+
+
+
+
+function xPlace(cor,word){
+    let start = (cor.row * game.c) + cor.col;
+    let okayCounter = 0;
+    let indexPlaced = [];
+    for(let i=0;i<word.length;i++){
+        if(game.arr[start+i]=='-'){
+            okayCounter++;
+        }
+    }
+    if(okayCounter == word.length){
+        for(let i=0;i<word.length;i++){
+            if(game.arr[start+i]=='-'){
+                game.arr[start+i] = word[i];
+                indexPlaced.push(start+i);
+            }
+        }
+        return indexPlaced;
+    }
+    return false;
+}
+
+
+
+
+function findStartPos(wordVal,totalVal){
+    return Math.floor(Math.random()*(totalVal - wordVal + 1))
+}
+
+
+
+
+function buildBoard(){
+    eles.gridContainer.innerHTML = '';
+    game.arr.forEach((ele,index)=>{
+        let div = document.createElement('div');
+        div.textContent = ele;
+        div.classList.add('grid-item');
+        eles.gridContainer.append(div);
+    })
+}
+
+
+

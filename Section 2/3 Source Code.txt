@@ -1,0 +1,26 @@
+const gameArea = document.querySelector('.gameArea');
+const btn = document.createElement('button');
+const output = document.createElement('div');
+btn.textContent = "START GAME!";
+output.textContent = "Click that button ";
+/// Add to HTML page
+gameArea.append(btn);
+gameArea.append(output);
+
+console.log(btn );
+///game start values
+const myWords = ["bird","dog","cat","cow"];
+
+//event listener
+btn.addEventListener('click',(e)=>{
+    //console.log(myWords);
+    myWords.sort(()=>{ return 0.5 - Math.random()});
+    let selWord = myWords[0];
+    output.textContent = `${selWord} is our word`;
+    console.log(myWords);
+})
+
+
+
+
+

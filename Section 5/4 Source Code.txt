@@ -1,0 +1,92 @@
+document.addEventListener('DOMContentLoaded',init);
+const eles = {};
+const myWords = ['cat','dog','mouse'];
+const game = {r:5,c:5,w:25,x:'',y:'',arr:[]};
+
+function init(){
+    eles.gameArea = document.querySelector('.gameArea');
+    eles.gridContainer = document.createElement('div');
+    eles.gridContainer.classList.add('gridContainer');
+    eles.myList = document.createElement('div');
+    eles.btn = document.createElement('button');
+    eles.gridSize = document.createElement('input');
+    //eles.gameArea.textContent = "Game Ready";
+    eles.gameArea.append(eles.gridContainer);
+    eles.gameArea.append(eles.myList);
+    eles.gameArea.append(eles.gridSize);
+    eles.gameArea.append(eles.btn);
+    eles.gridSize.setAttribute('type','number');
+    eles.gridContainer.textContent = 'Click Start to Start the Game. Select the number of cells for the game grid.'
+    eles.btn.textContent = 'Click to Start';
+    eles.gridSize.value = 5;
+    eles.btn.addEventListener('click',startGame);
+    console.log(eles);
+}
+
+function startGame(){
+    console.log('start game');
+    game.r = Number(eles.gridSize.value); //rows
+    game.c = Number(eles.gridSize.value); //cols
+    game.x = '';
+    game.y = '';
+    game.arr.length = 0;
+    game.arr.length = game.r * game.c;
+    for(let i=0;i<game.arr.length;i++){
+        game.arr[i] = '-';
+    }
+    for(let xx=0;xx<game.r;xx++){ game.x += ' auto '}
+    for(let yy=0;yy<game.r;yy++){ game.y += ' auto '}
+    console.log(game);
+    eles.gridContainer.style.gridTemplateColumns = game.x;
+    eles.gridContainer.style.gridTemplateRows = game.y;
+
+    myWords.forEach((val,index)=>{
+        let temp = placeWord(val);
+        console.log(temp);
+    })
+
+    buildBoard();
+}
+
+
+function placeWord(word){
+    console.log(word);
+    let placedOkay = false;
+    let cnt = 300;
+    word = word.split('');
+    console.log(word);
+    while(!placedOkay && cnt > 0){
+        cnt--;
+        let pos = {col:0,row:0}
+        if(word.length <= game.c){
+            pos.col = findStartPos(word.length,game.c);
+            pos.row = Math.floor(Math.random() * game.r);
+        
+            console.log(pos);
+        }
+    }
+}
+
+
+
+
+
+function findStartPos(wordVal,totalVal){
+    return Math.floor(Math.random()*(totalVal - wordVal + 1))
+}
+
+
+
+
+function buildBoard(){
+    eles.gridContainer.innerHTML = '';
+    game.arr.forEach((ele,index)=>{
+        let div = document.createElement('div');
+        div.textContent = ele;
+        div.classList.add('grid-item');
+        eles.gridContainer.append(div);
+    })
+}
+
+
+

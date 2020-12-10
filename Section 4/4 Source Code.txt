@@ -1,0 +1,37 @@
+const app = function() {
+    //variables
+    const gameValues = {};
+    const domEle = {};
+
+    function init(){
+         //select the DOM objects
+        domEle.gameArea = document.querySelector('.gameArea');
+        domEle.score =  createElements('div',domEle.gameArea,'score');
+        domEle.btn =  createElements('button',domEle.gameArea,'Start Game');
+        domEle.hiddenWord = createElements('div',domEle.gameArea,'secret words');
+        domEle.letters =  createElements('div',domEle.gameArea,'letters');
+
+        domEle.score.style.display = 'none';
+        domEle.letters.style.display = 'none';
+        domEle.hiddenWord.textContent = 'Click the button to start the hangman game';
+        console.log(domEle);
+        domEle.btn.addEventListener('click',startGame);
+        
+    }
+
+    function startGame(){
+        domEle.btn.style.display = 'none';
+        ///next step to game
+    }
+
+    function createElements(val,parentEle,output){
+        let temp =  document.createElement(val);
+        parentEle.append(temp);
+        temp.textContent = output;
+        return temp;
+    }
+    return {
+        init:init
+    }
+
+}();

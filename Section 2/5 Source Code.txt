@@ -1,0 +1,62 @@
+const gameArea = document.querySelector('.gameArea');
+const btn = document.createElement('button');
+const output = document.createElement('div');
+const inWord = document.createElement('input');
+inWord.setAttribute('type','text');
+inWord.classList.add('myInput');
+output.style.textAlign = 'center';
+btn.textContent = "START GAME!";
+output.textContent = "Click that button ";
+/// Add to HTML page
+gameArea.append(btn);
+gameArea.append(output);
+gameArea.append(inWord);
+
+console.log(btn );
+///game start values
+const myWords = ["hi","bird","dog","cat","cow"]; //min 2 character words or we end up in a loop
+const game = {sel:'',scramble:''};
+
+
+//event listener
+btn.addEventListener('click',(e)=>{
+    //console.log(myWords);
+    btn.style.display = 'none';
+    myWords.sort(()=>{ return 0.5 - Math.random()});
+    game.sel = myWords[0];
+    game.scramble = sorter(game.sel);
+    output.style.fontSize = '3em';
+    inWord.setAttribute('maxlength',game.sel.length);
+    output.textContent = `${game.scramble}`;
+    console.log(game.sel,game.scramble);
+})
+
+
+function sorter(val){
+    let temp = val.split('');
+    temp.sort(()=>{ return 0.5 - Math.random()});
+    temp = temp.join('');
+    console.log(temp);
+    if(val === temp){
+        console.log(val,temp);
+        return sorter(val);
+    }
+    return temp;
+}
+
+
+
+
+
+.myInput{
+    font-size:  2em;
+    border: 1px solid #eee;
+    letter-spacing: 0.5em;
+    text-align: center;
+}
+
+.gameArea {
+    margin: auto;
+    text-align: center;
+
+}

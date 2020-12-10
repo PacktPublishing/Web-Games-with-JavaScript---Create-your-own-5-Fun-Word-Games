@@ -1,0 +1,40 @@
+https://regexr.com/
+
+1A2B3C4D5E6F7G8H9I10J11K12L13M14N15O16P17Q18R19S20T21U22V23W24X25Y26Z
+
+const gameArea = document.querySelector('.gameArea');
+const userInput = document.createElement('textarea');
+const output = document.createElement('div');
+const btn = document.createElement('button');
+//
+btn.textContent = 'Create Message code';
+btn.style.display = 'block';
+userInput.style.width = '600px';
+userInput.style.height = '50px';
+userInput.value = "hello world";
+
+//add elements to html page
+gameArea.append(output);
+gameArea.append(userInput);
+gameArea.append(btn);
+
+//add interaction
+btn.addEventListener('click',(e)=>{
+    let rep = makeOutput(userInput.value);
+    console.log(rep);
+})
+
+function makeOutput(val){
+    let holder = [];
+    for(let i=0;i<val.length;i++){
+        let charVal = val.charAt(i);
+        //console.log(charVal);
+        let coded = charVal.toLowerCase().charCodeAt(0)-96;
+        console.log(coded);
+        holder.push(coded);
+    }
+    let temp = holder.join('-');
+    let temp1 = temp.replace(/--64-/g,' ');
+    console.log(temp1);
+    return temp1;
+}

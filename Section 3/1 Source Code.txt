@@ -1,0 +1,36 @@
+The Document method querySelector() returns the first Element within the document that matches the specified selector, or group of selectors. If no matches are found, null is returned.
+
+https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector
+
+element = document.querySelector(selectors);
+
+In an HTML document, the document.createElement() method creates the HTML element specified by tagName, or an HTMLUnknownElement if tagName isn't recognized.
+
+https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
+
+let element = document.createElement(tagName[, options]);
+
+HTML
+
+<!doctype html>
+<html>
+    <head><title>Secret Word Game</title>
+    <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="gameArea"></div>
+        <script src="app.js"></script>
+    </body>
+</html>
+
+JavaScript
+
+const gameArea = document.querySelector('.gameArea');
+const userInput = document.createElement('textarea');
+const output = document.createElement('div');
+const btn = document.createElement('button');
+
+//add elements to html page
+gameArea.append(output);
+gameArea.append(userInput);
+gameArea.append(btn);

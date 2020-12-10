@@ -1,0 +1,79 @@
+const gameArea = document.querySelector('.gameArea');
+const btn = document.createElement('button');
+const output = document.createElement('div');
+const inWord = document.createElement('input');
+inWord.setAttribute('type','text');
+inWord.classList.add('myInput');
+output.style.textAlign = 'center';
+btn.textContent = "START GAME!";
+output.textContent = "Click that button ";
+output.style.letterSpacing = '0';
+/// Add to HTML page
+gameArea.append(btn);
+gameArea.append(output);
+gameArea.append(inWord);
+
+console.log(btn );
+///game start values
+const myWords = ["hi","bird","dog","cat","cow"]; //min 2 character words or we end up in a loop
+const game = {sel:'',scramble:''};
+
+
+//event listener
+btn.addEventListener('click',(e)=>{
+    //console.log(myWords);
+    btn.style.display = 'none';
+    myWords.sort(()=>{ return 0.5 - Math.random()});
+    game.sel = myWords[0];
+    game.scramble = sorter(game.sel);
+    output.style.fontSize = '3em';
+    output.style.letterSpacing = '0.5em';
+    inWord.setAttribute('maxlength',game.sel.length);
+    inWord.focus();
+    output.textContent = `${game.scramble}`;
+    console.log(game.sel,game.scramble);
+})
+
+
+inWord.addEventListener('keyup',(e)=>{
+    console.log(e);
+    inWord.style.borderColor = '#eee';
+    inWord.style.borderWidth = '1px';
+    if(inWord.value.length == game.sel.length || e.code == 'Enter'){
+        winChecker();
+    }
+})
+
+
+function winChecker(){
+    inWord.style.borderWidth = '5px';
+    if(inWord.value == game.sel){
+        console.log('correct');
+        inWord.style.borderColor = 'green';
+    }else{
+        inWord.style.borderColor = 'red';
+        console.log('incorrect');
+        inWord.value = '';
+        inWord.focus();
+    }
+
+}
+
+
+
+function sorter(val){
+    let temp = val.split('');
+    temp.sort(()=>{ return 0.5 - Math.random()});
+    temp = temp.join('');
+    console.log(temp);
+    if(val === temp){
+        console.log(val,temp);
+        return sorter(val);
+    }
+    return temp;
+}
+
+
+
+
+

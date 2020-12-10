@@ -1,0 +1,22 @@
+{
+	"status": "success",
+	"data": [{
+			"question": "what color is the ocean",
+			"answer": "blue",
+			"opt": ["green", "red", "yellow", "pink", "purple"]
+		}, {
+			"question": "Do you like JavaScript",
+			"answer": "yes",
+			"opt": ["no"]
+		}, {
+			"question": "Do you like HTML",
+			"answer": "yes",
+			"opt": ["no"]
+        },
+        {
+			"question": "what color is the grass",
+			"answer": "green",
+			"opt": ["blue", "red", "yellow", "pink", "purple"]
+		}
+	]
+}

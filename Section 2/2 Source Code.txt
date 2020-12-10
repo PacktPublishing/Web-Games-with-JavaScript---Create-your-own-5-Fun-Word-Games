@@ -1,0 +1,15 @@
+const gameArea = document.querySelector('.gameArea');
+const btn = document.createElement('button');
+btn.textContent = "START GAME!";
+
+/// Add to HTML page
+gameArea.append(btn);
+
+console.log(btn );
+///game start values
+const myWords = ["bird","dog","cat","cow"];
+
+//event listener
+btn.addEventListener('click',(e)=>{
+    console.log(e);
+})

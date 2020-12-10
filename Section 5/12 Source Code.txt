@@ -1,0 +1,283 @@
+HTML
+
+<!doctype html>
+<html>
+    <head><title>WordSearch</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="app3.js"></script>
+    </head>
+    <body>
+        <div class="gameArea"></div>
+    </body>
+</html>
+
+CSS
+
+.gameArea {
+    text-align: center;
+    margin: auto;
+}
+
+.grid-item {
+    border: 1px solid black;
+    padding:20px;
+    font-size: 2em;
+    text-align: center;
+    cursor:grab;
+}
+.grid-item:hover{
+    background-color: lightsteelblue;
+}
+
+button{
+    padding:10px;
+    text-align: center;
+    color:white;
+    background-color: red;
+    font-size: 2em;
+}
+.myList, input[type="number"]{
+    text-align: center;
+    font-size: 2em;
+}
+input[type="number"]{
+    width:50px;
+}
+.gridContainer{
+    display: grid;
+/*     grid-template-columns: auto auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto; */
+}
+
+JavaScript
+
+document.addEventListener('DOMContentLoaded',init);
+const eles = {};
+//const myWords = ['zzzzz'];
+const myWords = ['cat','dog','mouse','bird','horse','donkey','frog','rabbit','snake'];
+const game = {r:5,c:5,w:100,x:'',y:'',arr:[],placedWords:[],boardArray:[]};
+
+function init(){
+    eles.gameArea = document.querySelector('.gameArea');
+    eles.gridContainer = document.createElement('div');
+    eles.gridContainer.style.margin = 'auto';
+    eles.message = document.createElement('div');
+    eles.gridContainer.classList.add('gridContainer');
+    eles.myList = document.createElement('div');
+    eles.btn = document.createElement('button');
+    eles.gridSize = document.createElement('input');
+    eles.myList.classList.add('myList');
+    //eles.gameArea.textContent = "Game Ready";
+    eles.gameArea.append(eles.message);
+    eles.gameArea.append(eles.gridSize);
+    eles.gameArea.append(eles.btn);
+    eles.gameArea.append(eles.gridContainer);
+    eles.gameArea.append(eles.myList);
+
+    eles.gridSize.setAttribute('type','number');
+    eles.gridSize.setAttribute('max','20');
+    eles.gridSize.setAttribute('min','2');
+    log('Click Start to Start the Game. Select the number of cells for the game grid.');
+    eles.btn.textContent = 'Click to Start';
+    eles.gridSize.value = 5;
+    eles.btn.addEventListener('click',startGame);
+    //console.log(eles);
+}
+
+function startGame(){
+    log('Select the grid letters');
+    eles.gridSize.style.display = 'none';
+    eles.btn.style.display = 'none';
+    game.r = Number(eles.gridSize.value); //rows
+    game.c = Number(eles.gridSize.value); //cols
+    eles.gridContainer.style.width = (game.c * game.w +50) +'px';
+    game.x = '';
+    game.y = '';
+    game.boardArray.length = 0;
+    game.arr.length = 0;
+    game.arr.length = game.r * game.c;
+    game.placedWords.length = 0;
+    for(let i=0;i<game.arr.length;i++){
+        game.arr[i] = '-';
+    }
+    for(let xx=0;xx<game.r;xx++){ game.x += ' auto '}
+    for(let yy=0;yy<game.r;yy++){ game.y += ' auto '}
+    //console.log(game);
+    eles.gridContainer.style.gridTemplateColumns = game.x;
+    eles.gridContainer.style.gridTemplateRows = game.y;
+
+    myWords.forEach((val,index)=>{
+        let temp = placeWord(val);
+        if(temp){
+            game.placedWords.push({
+                word:val,pos:temp
+            });
+        }
+    })
+
+    addLetters();
+    buildBoard();
+    eles.myList.innerHTML = ''; //build list of words
+    game.placedWords.forEach((w)=>{
+        w.ele = document.createElement('div');
+        w.ele.textContent = w.word;
+        w.ele.arr = w.pos;
+        eles.myList.append(w.ele);
+    })
+    console.log(game);
+
+}
+function addLetters(){
+    for(let i=0;i<game.arr.length;i++){
+        if(game.arr[i]=='-'){
+            game.arr[i]=randomLetter();
+        }
+    }
+}
+
+function randomLetter(){
+    return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.toLowerCase().split('')[Math.floor(Math.random()*26)]
+}
+
+function placeWord(word){
+    //console.log(word);
+    let placedOkay = false;
+    let cnt = 100;
+    word = (Math.random() > 0.5) ? word : word.split('').reverse().join('');
+    //console.log(word);
+    while(!placedOkay && cnt > 0){
+        cnt--;
+        let pos = {col:0,row:0}
+        let dir = (Math.random() > 0.5) ? true : false;
+        if(dir && word.length <= game.c){
+            pos.col = findStartPos(word.length,game.c);
+            pos.row = Math.floor(Math.random() * game.r);
+            placedOkay = xPlace(pos,word);
+        }else if(!dir && word.length <= game.r){
+            pos.row = findStartPos(word.length,game.r);
+            pos.col = Math.floor(Math.random() * game.c);
+            placedOkay = yPlace(pos,word); 
+        }
+    }
+    return placedOkay;
+}
+function yPlace(cor,word){
+    let start = (cor.row * game.c) + cor.col;
+    let okayCounter = 0;
+    let indexPlaced = [];
+    for(let i=0;i<word.length;i++){
+        if(game.arr[start+(i*game.c)]=='-'){
+            okayCounter++;
+        }
+    }
+    if(okayCounter == word.length){
+        for(let i=0;i<word.length;i++){
+            if(game.arr[start+(i*game.c)]=='-'){
+                game.arr[start+(i*game.c)] = word[i];
+                indexPlaced.push(start+(i*game.c));
+            }
+        }
+        return indexPlaced;
+    }
+    return false;
+}
+
+
+
+
+function xPlace(cor,word){
+    let start = (cor.row * game.c) + cor.col;
+    let okayCounter = 0;
+    let indexPlaced = [];
+    for(let i=0;i<word.length;i++){
+        if(game.arr[start+i]=='-'){
+            okayCounter++;
+        }
+    }
+    if(okayCounter == word.length){
+        for(let i=0;i<word.length;i++){
+            if(game.arr[start+i]=='-'){
+                game.arr[start+i] = word[i];
+                indexPlaced.push(start+i);
+            }
+        }
+        return indexPlaced;
+    }
+    return false;
+}
+
+
+
+
+function findStartPos(wordVal,totalVal){
+    return Math.floor(Math.random()*(totalVal - wordVal + 1))
+}
+
+
+
+
+function buildBoard(){
+    eles.gridContainer.innerHTML = '';
+    game.arr.forEach((ele,index)=>{
+        let div = document.createElement('div');
+        div.textContent = ele;
+        div.classList.add('grid-item');
+        eles.gridContainer.append(div);
+        div.addEventListener('click',(e)=>{
+            console.log(index);
+            console.log(game.arr[index]);
+            game.boardArray[index] = true;
+            let checker = {found:0,word:''};
+            game.placedWords.forEach((w)=>{
+                if(w.pos.includes(index)){
+                    checker.found++;
+                    checker.word = w.word;
+                }
+            })
+            if(checker.found>0){
+                div.style.backgroundColor = 'green';
+            }else{
+                div.style.backgroundColor = 'red';
+            }
+            foundChecker();
+        })
+    })
+}
+
+
+function foundChecker(){
+    game.placedWords.forEach((w,ind)=>{
+        let checker = 0;
+        game.boardArray.forEach((val,index)=>{
+            if(w.pos.includes(index)){
+                checker++;
+            }
+        })
+        if(checker==w.word.length){
+            w.ele.style.color = "red";
+            w.ele.style.textDecoration = 'line-through';
+        };
+    })
+    checkWinner();
+}
+function log(mes){
+    eles.message.innerHTML = mes;
+}
+
+function checkWinner(){
+    let counter = 0 ;
+    game.placedWords.forEach((w,ind)=>{
+       if(w.ele.style.textDecoration=='line-through'){
+        counter++;
+       }
+    })
+    log(game.placedWords.length - counter + ' Words left');
+    if((game.placedWords.length - counter)==0 || game.placedWords.length == 0){
+        log('You Won<br>Click button to start Again');
+        eles.gridSize.style.display = 'inline-block';
+        eles.btn.style.display = 'inline-block';
+    }
+}
+
+
+

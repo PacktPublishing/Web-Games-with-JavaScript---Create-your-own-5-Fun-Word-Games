@@ -1,0 +1,42 @@
+.box {
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    display: inline-block;
+    cursor: grab;
+    min-width: 100px;
+}
+button {
+    display: block;
+    margin: auto;
+    padding: 10px;
+    background-color: red;
+    color:white;
+    border-radius: 10px;
+}
+.ans{
+    margin: auto;
+    text-align: center;
+}
+.que{
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 2em;
+}
+.question{
+    text-align: center;
+    margin-top: 10px;
+    padding: 10px;
+}
+.message {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2em;
+    background-color: midnightblue;
+    color:white;
+}
+.boxA:hover{
+    background-color: linen;
+}

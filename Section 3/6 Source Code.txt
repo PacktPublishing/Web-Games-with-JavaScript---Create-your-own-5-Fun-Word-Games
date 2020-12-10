@@ -1,0 +1,101 @@
+const gameArea = document.querySelector('.gameArea');
+const userInput = document.createElement('textarea');
+const output = document.createElement('div');
+const btn = document.createElement('button');
+const output1 = document.createElement('div');
+const timeCounter  = document.createElement('div');
+const minutesCounter = document.createElement('span');
+const secondsCounter = document.createElement('span');
+
+
+
+//
+output1.style.fontSize = '0.7em';
+output1.style.backgroundColor = '#ddd';
+output1.style.padding = '10px';
+btn.textContent = 'Create Message code';
+btn.style.display = 'block';
+userInput.style.width = '600px';
+userInput.style.height = '50px';
+userInput.value = "hello world";
+
+//add elements to html page
+timeCounter.append(minutesCounter);
+timeCounter.append(document.createTextNode(':'));
+timeCounter.append(secondsCounter);
+
+gameArea.append(timeCounter);
+gameArea.append(output);
+gameArea.append(userInput);
+gameArea.append(btn);
+gameArea.append(output1);
+
+//game values
+const game = {totalSeconds:0,inter:{}};
+
+window.addEventListener('DOMContentLoaded',init);
+
+
+
+
+function init(){
+    let html = '';
+    for(let i=97;i<123;i++){
+        let val = String.fromCharCode(i);
+        //console.log(i,val);
+        html += `${i-96}=${val} `;
+    }
+    output1.innerHTML = html;
+    game.inter = setInterval(setTimer,1000);
+}
+
+function setTimer(){
+    game.totalSeconds++;
+    secondsCounter.innerHTML = padNum((game.totalSeconds % 60));
+    minutesCounter.innerHTML = padNum(Math.floor(game.totalSeconds / 60));
+    console.log(game.totalSeconds);
+}
+
+function padNum(val){
+    let valString = val + "";
+    if(valString.length < 2){
+        return "0" + valString
+    }else{
+        return valString;
+    }
+
+
+
+}
+
+
+//add interaction
+btn.addEventListener('click',(e)=>{
+    let rep = makeOutput1(userInput.value);
+    output.textContent = rep;
+    console.log(rep);
+})
+
+
+function makeOutput1(val){
+    let temp = val.split('').map((ltr)=>{
+        return ltr.toLowerCase().charCodeAt(0)-96;
+    })
+    return temp.join('-').replace(/--64-/g,' ');
+}
+
+
+function makeOutput(val){
+    let holder = [];
+    for(let i=0;i<val.length;i++){
+        let charVal = val.charAt(i);
+        //console.log(charVal);
+        let coded = charVal.toLowerCase().charCodeAt(0)-96;
+        console.log(coded);
+        holder.push(coded);
+    }
+    let temp = holder.join('-');
+    let temp1 = temp.replace(/--64-/g,' ');
+    console.log(temp1);
+    return temp1;
+}
